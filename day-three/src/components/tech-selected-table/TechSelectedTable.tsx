@@ -22,38 +22,38 @@ export const TechSelectedTable: React.FC<TechSelectedTableProps> = ({
   const [techs, setTechs] = useState<TechDTO[]>([]);
 
   useEffect(() => {
-    const fetchLanguageDetails = async () => {
-      try {
-        const response = await axios.get(
-          "wiki/w/api.php?prop=extracts&exintro&explaintext",
-          {
-            params: {
-              format: "json",
-              action: "query",
-              titles: newTech,
-            },
-          }
-        );
-        const pages = response.data.query.pages;
-        const details = Object.keys(pages).map((key) => ({
-          title: pages[key].title,
-          extract: pages[key].extract,
-        }));
-
-        setTechs([
-          ...techs,
-          { name: details[0].title, resume: details[0].extract },
-        ]);
-      } catch (error) {
-        console.error(
-          "Erro ao buscar detalhes das linguagens de programação:",
-          error
-        );
-      }
-    };
-
     fetchLanguageDetails();
   }, [newTech]);
+
+  const fetchLanguageDetails = async () => {
+    try {
+      const response = await axios.get(
+        "wiki/w/api.php?prop=extracts&exintro&explaintext",
+        {
+          params: {
+            format: "json",
+            action: "query",
+            titles: newTech,
+          },
+        }
+      );
+      const pages = response.data.query.pages;
+      const details = Object.keys(pages).map((key) => ({
+        title: pages[key].title,
+        extract: pages[key].extract,
+      }));
+
+      setTechs([
+        ...techs,
+        { name: details[0].title, resume: details[0].extract },
+      ]);
+    } catch (error) {
+      console.error(
+        "Erro ao buscar detalhes das linguagens de programação:",
+        error
+      );
+    }
+  };
 
   return (
     <TableContainer component={Paper}>
